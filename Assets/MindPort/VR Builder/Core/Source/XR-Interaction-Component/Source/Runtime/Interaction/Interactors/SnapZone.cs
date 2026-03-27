@@ -19,7 +19,7 @@ namespace VRBuilder.XRInteraction
     /// Adds the functionality to force the selection and unselection of specific interactables.
     /// It also adds a highlighter to emphasize the position of the socket.
     /// </remarks>
-    public partial class SnapZone : XRSocketInteractor, ISnapZone
+    public partial class SnapZone : UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor, ISnapZone
     {
         /// <summary>
         /// Gets or sets whether <see cref="ShownHighlightObject"/> is shown or not.
@@ -128,23 +128,23 @@ namespace VRBuilder.XRInteraction
         /// Forces the socket interactor to unselect the given target, if it is not null.
         /// </summary>
         [Obsolete("Use ForceUnselectInteractable instead.")]
-        protected XRBaseInteractable ForceUnselectTarget { get; set; }
+        protected UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable ForceUnselectTarget { get; set; }
 
         /// <summary>
         /// Forces the socket interactor to unselect the given target, if it is not null.
         /// </summary>
-        protected IXRSelectInteractable ForceUnselectInteractable { get; set; }
+        protected UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable ForceUnselectInteractable { get; set; }
         
         /// <summary>
         /// Forces the socket interactor to select the given target, if it is not null.
         /// </summary>
         [Obsolete("Use ForceSelectInteractable instead.")]
-        protected XRBaseInteractable ForceSelectTarget { get; set; }
+        protected UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable ForceSelectTarget { get; set; }
 
         /// <summary>
         /// Forces the socket interactor to unselect the given target, if it is not null.
         /// </summary>
-        protected IXRSelectInteractable ForceSelectInteractable { get; set; }
+        protected UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable ForceSelectInteractable { get; set; }
 
         /// <summary>
         /// True when an object is about to be snapped to the snapzone.
@@ -181,7 +181,7 @@ namespace VRBuilder.XRInteraction
         private Material activeMaterial;
         private Vector3 tmpCenterOfMass;
         private List<Validator> validators = new List<Validator>();
-        private readonly List<XRBaseInteractable> snapZoneHoverTargets = new List<XRBaseInteractable>();
+        private readonly List<UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable> snapZoneHoverTargets = new List<UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable>();
         
         protected override void Awake()
         {
@@ -211,7 +211,7 @@ namespace VRBuilder.XRInteraction
             }
         }
 
-        internal void AddHoveredInteractable(XRBaseInteractable interactable)
+        internal void AddHoveredInteractable(UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable)
         {  
             if (interactable != null)
             {
@@ -222,7 +222,7 @@ namespace VRBuilder.XRInteraction
             }
         }
 
-        internal void RemoveHoveredInteractable(XRBaseInteractable interactable)
+        internal void RemoveHoveredInteractable(UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable)
         {
             snapZoneHoverTargets.Remove(interactable);
         }
@@ -249,7 +249,7 @@ namespace VRBuilder.XRInteraction
         
         private void OnAttach(SelectEnterEventArgs arguments)
         {
-            IXRSelectInteractable interactable = arguments.interactableObject;
+            UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable interactable = arguments.interactableObject;
             
             if (interactable != null)
             {
@@ -261,7 +261,7 @@ namespace VRBuilder.XRInteraction
         
         private void OnDetach(SelectExitEventArgs arguments)
         {
-            IXRSelectInteractable interactable = arguments.interactableObject;
+            UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable interactable = arguments.interactableObject;
             
             if (interactable != null)
             {
@@ -409,7 +409,7 @@ namespace VRBuilder.XRInteraction
                 return;
             }
             
-            foreach (XRBaseInteractable target in snapZoneHoverTargets)
+            foreach (UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable target in snapZoneHoverTargets)
             {
                 if (interactablesHovered.Contains(target) || target.isSelected)
                 {
@@ -508,7 +508,7 @@ namespace VRBuilder.XRInteraction
         /// Unselects any selected interactable object and forces the provided interactable object to be selected if it is selectable.
         /// </summary>
         /// <param name="interactable">Interactable object to be selected.</param>
-        public virtual void ForceSelect(IXRSelectInteractable interactable)
+        public virtual void ForceSelect(UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable interactable)
         {
             ForceUnselect();
 
@@ -529,12 +529,12 @@ namespace VRBuilder.XRInteraction
         /// <param name="interactable">Interactable to check.</param>
         /// <returns><c>true</c> if the interactable can be selected this frame.</returns>
         /// <remarks>Adds the functionality of selecting and unselecting specific interactables.</remarks>
-        public override bool CanSelect(IXRSelectInteractable interactable)
+        public override bool CanSelect(UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable interactable)
         {
             return IsValidSnapTarget(interactable) && base.CanSelect(interactable);
         }
 
-        protected bool IsValidSnapTarget(IXRSelectInteractable interactable)
+        protected bool IsValidSnapTarget(UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable interactable)
         {
             // If one specific target should be unselected,
             if (ForceUnselectInteractable == interactable)
@@ -568,15 +568,15 @@ namespace VRBuilder.XRInteraction
         }
 
         [Obsolete]
-        public override bool CanSelect(XRBaseInteractable interactable)
+        public override bool CanSelect(UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable)
         {
-            return CanSelect((IXRSelectInteractable)interactable);
+            return CanSelect((UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable)interactable);
         }
 
         /// <inheritdoc />
         public bool CanSnap(ISnappableProperty target)
         {
-            IXRSelectInteractable interactableObject = target.SceneObject.GameObject.GetComponent<XRBaseInteractable>();
+            UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable interactableObject = target.SceneObject.GameObject.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable>();
 
             if (interactableObject == null)
             {
@@ -589,7 +589,7 @@ namespace VRBuilder.XRInteraction
         /// <inheritdoc />
         public bool ForceSnap(ISnappableProperty target)
         {
-            XRBaseInteractable interactableObject = target.SceneObject.GameObject.GetComponent<XRBaseInteractable>();
+            UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactableObject = target.SceneObject.GameObject.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable>();
 
             if (interactableObject == null)
             {

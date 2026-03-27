@@ -8,7 +8,7 @@ namespace VRBuilder.XRInteraction
     /// has been spawned after loading the scene.
     /// </summary>
     [AddComponentMenu("VR Builder/Interactables/Teleportation Area (VR Builder)")]
-    public class TeleportationAreaVRBuilder : TeleportationArea
+    public class TeleportationAreaVRBuilder : UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.TeleportationArea
     {
         protected override void Reset()
         {
@@ -55,14 +55,14 @@ namespace VRBuilder.XRInteraction
             base.OnDeactivated(args);
         }
 
-        private void CheckTeleportationProvider(IXRInteractor interactor)
+        private void CheckTeleportationProvider(UnityEngine.XR.Interaction.Toolkit.Interactors.IXRInteractor interactor)
         {
             if (teleportationProvider != null)
             {
                 return;
             }
 
-            TeleportationProvider provider = interactor.transform.GetComponentInParent<TeleportationProvider>();
+            UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.TeleportationProvider provider = interactor.transform.GetComponentInParent<UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.TeleportationProvider>();
 
             if (provider != null)
             {

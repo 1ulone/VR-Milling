@@ -89,7 +89,7 @@ namespace VRBuilder.XRInteraction.Properties
 
         private void HandleXRGrabbed(SelectEnterEventArgs arguments)
         {
-            if(arguments.interactorObject is XRSocketInteractor)
+            if(arguments.interactorObject is UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor)
             {
                 return;
             }
@@ -100,7 +100,7 @@ namespace VRBuilder.XRInteraction.Properties
 
         private void HandleXRUngrabbed(SelectExitEventArgs arguments)
         {
-            if (arguments.interactorObject is XRSocketInteractor)
+            if (arguments.interactorObject is UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor)
             {
                 return;
             }

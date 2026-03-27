@@ -9,7 +9,7 @@ namespace VRBuilder.XRInteraction
     /// set to be a trigger to work.
     /// </summary>
     /// <remarks>Adds extra control over applicable interactions.</remarks>
-    public partial class DirectInteractor : XRDirectInteractor
+    public partial class DirectInteractor : UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor
     {
         [SerializeField]
         private bool precisionGrab = true;
@@ -83,11 +83,11 @@ namespace VRBuilder.XRInteraction
             {
                 switch (interactableObject.movementType)
                 {
-                    case XRBaseInteractable.MovementType.VelocityTracking:
-                    case XRBaseInteractable.MovementType.Kinematic:
+                    case UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable.MovementType.VelocityTracking:
+                    case UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable.MovementType.Kinematic:
                         attachTransform.SetPositionAndRotation(interactableObject.transform.position, interactableObject.transform.rotation);
                         break;
-                    case XRBaseInteractable.MovementType.Instantaneous:
+                    case UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable.MovementType.Instantaneous:
                         Debug.LogWarning("Precision Grab is currently not compatible with interactable objects with Movement Type configured as Instantaneous.\n"
                         + $"Please change the Movement Type in {interactableObject.name}.", interactableObject);
                         break;
@@ -98,7 +98,7 @@ namespace VRBuilder.XRInteraction
         }
 
         [System.Obsolete("OnSelectEntering(XRBaseInteractable) has been deprecated. Please, upgrade the XR Interaction Toolkit from the Package Manager to the latest available version.")]
-        protected new void OnSelectEntering(XRBaseInteractable interactable)
+        protected new void OnSelectEntering(UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable)
         {
             OnSelectEntering(new SelectEnterEventArgs
             {
@@ -108,7 +108,7 @@ namespace VRBuilder.XRInteraction
         }
 
         [System.Obsolete("OnSelectEnter(XRBaseInteractable) has been deprecated. Please, upgrade the XR Interaction Toolkit from the Package Manager to the latest available version.")]
-        protected void OnSelectEnter(XRBaseInteractable interactable)
+        protected void OnSelectEnter(UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable)
         {
             OnSelectEntering(new SelectEnterEventArgs
             {
@@ -140,7 +140,7 @@ namespace VRBuilder.XRInteraction
         }
 
         [System.Obsolete("OnSelectExiting(XRBaseInteractable) has been deprecated. Please, upgrade the XR Interaction Toolkit from the Package Manager to the latest available version.")]
-        protected new void OnSelectExiting(XRBaseInteractable interactable)
+        protected new void OnSelectExiting(UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable)
         {
             OnSelectExiting(new SelectExitEventArgs
             {
@@ -150,7 +150,7 @@ namespace VRBuilder.XRInteraction
         }
 
         [System.Obsolete("OnSelectExit(XRBaseInteractable) has been deprecated. Please, upgrade the XR Interaction Toolkit from the Package Manager to the latest available version.")]
-        protected void OnSelectExit(XRBaseInteractable interactable)
+        protected void OnSelectExit(UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable interactable)
         {
             OnSelectExiting(new SelectExitEventArgs
             {

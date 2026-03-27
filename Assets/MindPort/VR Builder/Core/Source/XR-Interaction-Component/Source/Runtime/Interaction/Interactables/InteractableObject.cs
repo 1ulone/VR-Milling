@@ -13,7 +13,7 @@ namespace VRBuilder.XRInteraction
     /// </summary>
     /// <remarks>Adds extra control over applicable interactions.</remarks>
     [AddComponentMenu("VR Builder/Interactables/Interactable Object (VR Builder)")]
-    public partial class InteractableObject : XRGrabInteractable, IInteractableObject
+    public partial class InteractableObject : UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable, IInteractableObject
     {
         [SerializeField]
         private bool isTouchable = true;
@@ -25,7 +25,7 @@ namespace VRBuilder.XRInteraction
         private bool isUsable = true;
         
         private Rigidbody internalRigidbody;
-        private XRSocketInteractor selectingSocket;
+        private UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor selectingSocket;
         private bool defaultRigidbodyKinematic;
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace VRBuilder.XRInteraction
         /// <summary>
         /// Get the current selecting 'XRSocketInteractor' for this <see cref="InteractableObject"/>.
         /// </summary>
-        public XRSocketInteractor SelectingSocket => selectingSocket;
+        public UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor SelectingSocket => selectingSocket;
 
 
         protected override void Awake()
@@ -134,7 +134,7 @@ namespace VRBuilder.XRInteraction
         /// <param name="interactor">Interactor to check for a valid hover state with.</param>
         /// <returns>True if hovering is valid this frame, False if not.</returns>
         /// <remarks>It always returns false when <see cref="IsTouchable"/> is false.</remarks>
-        public override bool IsHoverableBy(IXRHoverInteractor interactor)
+        public override bool IsHoverableBy(UnityEngine.XR.Interaction.Toolkit.Interactors.IXRHoverInteractor interactor)
         {
             return isTouchable && base.IsHoverableBy(interactor);
         }
@@ -145,9 +145,9 @@ namespace VRBuilder.XRInteraction
         /// <param name="interactor">Interactor to check for a valid selection with.</param>
         /// <returns>True if selection is valid this frame, False if not.</returns>
         /// <remarks>It always returns false when <see cref="IsGrabbable"/> is false.</remarks>
-        public override bool IsSelectableBy(IXRSelectInteractor interactor)
+        public override bool IsSelectableBy(UnityEngine.XR.Interaction.Toolkit.Interactors.IXRSelectInteractor interactor)
         {
-            if (IsInSocket && interactor as XRSocketInteractor == selectingSocket)
+            if (IsInSocket && interactor as UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor == selectingSocket)
             {
                 return true;
             }
@@ -166,7 +166,7 @@ namespace VRBuilder.XRInteraction
                 OnDeactivated(new DeactivateEventArgs
                 {
                     interactableObject = this,
-                    interactorObject = isSelected ? interactorsSelecting[0] as IXRActivateInteractor : null,
+                    interactorObject = isSelected ? interactorsSelecting[0] as UnityEngine.XR.Interaction.Toolkit.Interactors.IXRActivateInteractor : null,
                 });
             }
             
@@ -181,11 +181,11 @@ namespace VRBuilder.XRInteraction
             OnActivated(new ActivateEventArgs
             {
                 interactableObject = this,
-                interactorObject = isSelected ? interactorsSelecting[0] as IXRActivateInteractor : null,
+                interactorObject = isSelected ? interactorsSelecting[0] as UnityEngine.XR.Interaction.Toolkit.Interactors.IXRActivateInteractor : null,
             });
         }
 
-        internal void ForceSelectEnter(IXRSelectInteractor interactor)
+        internal void ForceSelectEnter(UnityEngine.XR.Interaction.Toolkit.Interactors.IXRSelectInteractor interactor)
         {
             interactionManager.SelectEnter(interactor, this);
         }
@@ -202,13 +202,13 @@ namespace VRBuilder.XRInteraction
         /// <seealso cref="OnSelectEntered(SelectEnterEventArgs)"/>
         protected override void OnSelectEntering(SelectEnterEventArgs arguments)
         {
-            IXRInteractor interactor = arguments.interactorObject;
+            UnityEngine.XR.Interaction.Toolkit.Interactors.IXRInteractor interactor = arguments.interactorObject;
 
             base.OnSelectEntering(arguments);
 
             if (IsInSocket == false)
             {
-                XRSocketInteractor socket = interactor.transform.GetComponent<XRSocketInteractor>();
+                UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor socket = interactor.transform.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor>();
 
                 if (socket != null)
                 {
@@ -230,9 +230,9 @@ namespace VRBuilder.XRInteraction
         protected override void OnSelectExiting(SelectExitEventArgs arguments)
         {
             base.OnSelectExiting(arguments);
-            IXRSelectInteractor interactor = arguments.interactorObject;
+            UnityEngine.XR.Interaction.Toolkit.Interactors.IXRSelectInteractor interactor = arguments.interactorObject;
             
-            if (IsInSocket && interactor as XRSocketInteractor == selectingSocket)
+            if (IsInSocket && interactor as UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor == selectingSocket)
             {
                 selectingSocket = null;
             }
@@ -259,7 +259,7 @@ namespace VRBuilder.XRInteraction
         }
 
         [System.Obsolete("OnActivate(XRBaseInteractor) has been deprecated. Please, upgrade the XR Interaction Toolkit from the Package Manager to the latest available version.")]
-        protected new void OnActivate(XRBaseInteractor interactor)
+        protected new void OnActivate(UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInteractor interactor)
         {
             OnActivated(new ActivateEventArgs
             {
@@ -287,7 +287,7 @@ namespace VRBuilder.XRInteraction
         }
 
         [System.Obsolete("OnDeactivate(XRBaseInteractor) has been deprecated. Please, upgrade the XR Interaction Toolkit from the Package Manager to the latest available version.")]
-        protected new void OnDeactivate(XRBaseInteractor interactor)
+        protected new void OnDeactivate(UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInteractor interactor)
         {
             OnDeactivated(new DeactivateEventArgs
             {
@@ -301,7 +301,7 @@ namespace VRBuilder.XRInteraction
             bool wasTouchable = isTouchable, wasGrabbable = isGrabbable, wasUsable = isUsable;
             isTouchable = isGrabbable = isUsable = false;
 
-            IXRSelectInteractor snapZone = null;
+            UnityEngine.XR.Interaction.Toolkit.Interactors.IXRSelectInteractor snapZone = null;
 
             if (selectingSocket != null)
             {
